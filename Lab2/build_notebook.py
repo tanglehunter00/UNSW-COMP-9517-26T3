@@ -165,14 +165,14 @@ def build() -> nbformat.NotebookNode:
                 "    show(panorama)\n"
                 "    return panorama\n"
                 "\n"
-                "stitch_pair(*images)"
+                "_ = stitch_pair(*images)"
             ),
             new_markdown_cell("### Personal image pair"),
             new_code_cell(
                 "personal = [read_image(p, max_width=1000) for p in PERSONAL_PATHS]\n"
                 "for im in personal:\n"
                 "    show(im)\n"
-                "stitch_pair(*personal)"
+                "_ = stitch_pair(*personal)"
             ),
         ],
         metadata={
