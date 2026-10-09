@@ -51,10 +51,12 @@ def build() -> nbformat.NotebookNode:
                 "    return cv2.SIFT_create(nfeatures=nfeatures).detect(gray)\n"
                 "\n"
                 "def draw_kp(image, keypoints):\n"
-                "    return cv2.drawKeypoints(\n"
-                "        image, keypoints, None, color=(0, 255, 0),\n"
-                "        flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS,\n"
-                "    )\n"
+                "    out = image.copy()\n"
+                "    for kp in keypoints:\n"
+                "        x, y = int(round(kp.pt[0])), int(round(kp.pt[1]))\n"
+                "        r = max(1, int(round(kp.size / 2)))\n"
+                "        cv2.circle(out, (x, y), r, (0, 0, 255), 3)\n"
+                "    return out\n"
                 "\n"
                 'images = [read_image(IMAGE_DIR / name) for name in ("Image1.jpg", "Image2.jpg")]\n'
                 "for im in images:\n"
@@ -62,8 +64,7 @@ def build() -> nbformat.NotebookNode:
             ),
             new_markdown_cell(
                 "## Task 1 — SIFT keypoints\n\n"
-                "**(a)** Default SIFT parameters. "
-                "**(b)** `nfeatures=20` to keep about the 20 strongest features."
+                "use nfeatures 20 for only 20 strongest keypoint"
             ),
             new_code_cell(
                 "default_kp = [sift_keypoints(im) for im in images]\n"
@@ -110,13 +111,10 @@ def build() -> nbformat.NotebookNode:
             ),
             new_markdown_cell(
                 "### Answers\n\n"
-                "Many keypoints stay on the same scene structures after scaling and rotation, "
-                "because SIFT is designed to be scale- and rotation-invariant "
-                "(characteristic scale + local orientation).\n\n"
-                "Salt-and-pepper noise changes local contrast, so some keypoints move "
-                "or disappear and new ones appear.\n\n"
-                "For these images, SIFT is most robust to **scale** and **rotation**; "
-                "it is least robust to **salt-and-pepper noise**."
+                "yes, roughly same for those of originals i believe\n\n"
+                "salt and pepper noise changes local contrast, so some keypoints move "
+                "or disappear and new ones appear\n\n"
+                "sift works best for scale and rotation, not that good for salt and papper noise"
             ),
             new_markdown_cell(
                 "## Task 3 — Matching, RANSAC and stitching\n\n"
