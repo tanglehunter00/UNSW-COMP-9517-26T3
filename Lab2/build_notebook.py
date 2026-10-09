@@ -142,7 +142,7 @@ def build() -> nbformat.NotebookNode:
                 "    # Task 3b: RANSAC homography and stitch\n"
                 "    src = np.float32([k1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)\n"
                 "    dst = np.float32([k2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)\n"
-                "    H, _ = cv2.findHomography(src, dst, cv2.RANSAC, 4.0)\n"
+                "    H, mask = cv2.findHomography(src, dst, cv2.RANSAC, 4.0)\n"
                 "\n"
                 "    h1, w1 = first.shape[:2]\n"
                 "    h2, w2 = second.shape[:2]\n"
@@ -163,16 +163,15 @@ def build() -> nbformat.NotebookNode:
                 "    ys, xs = np.where(gray > 0)\n"
                 "    panorama = panorama[ys.min():ys.max() + 1, xs.min():xs.max() + 1]\n"
                 "    show(panorama)\n"
-                "    return panorama\n"
                 "\n"
-                "_ = stitch_pair(*images)"
+                "stitch_pair(*images)"
             ),
             new_markdown_cell("### Personal image pair"),
             new_code_cell(
                 "personal = [read_image(p, max_width=1000) for p in PERSONAL_PATHS]\n"
                 "for im in personal:\n"
                 "    show(im)\n"
-                "_ = stitch_pair(*personal)"
+                "stitch_pair(*personal)"
             ),
         ],
         metadata={
